@@ -80,6 +80,3 @@ class Wine(Dataset):
     def __init__(self, path='datasets/wine/wine.csv', shuffle=True):
         super().__init__(path, shuffle)
         self._label_column = self._data.columns[0]
-
-
-breakpoint()
