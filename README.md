@@ -26,3 +26,5 @@ Alguns datasets mudaram de número de features, assim como não estão mais disp
 * WDBC (Breast Cancer Wisconsin (Diagnostic)) -> 30 features (no artigo) -> 32 features (atualmente)
 
 Além disso, [Thyroid](https://archive.ics.uci.edu/ml/datasets/Thyroid+Disease) possui mais de um dataset, e o escolhido foi o 'new-thyroid'.
+
+Para avaliação, foi utilizado um K = 7 para o KSS (K Strongest Strengths) e o 10-Fold Cross-Validation.
