@@ -28,3 +28,20 @@ Alguns datasets mudaram de número de features, assim como não estão mais disp
 Além disso, [Thyroid](https://archive.ics.uci.edu/ml/datasets/Thyroid+Disease) possui mais de um dataset, e o escolhido foi o 'new-thyroid'.
 
 Para avaliação, foi utilizado um K = 7 para o KSS (K Strongest Strengths) e o 10-Fold Cross-Validation.
+
+Os algoritmos utilizados para comparação com o algoritmo do artigo são:
+* kNN, com K = 7, da biblioteca SKLearn, documentado [neste link](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html);
+* DWkNN (Distance Weighted kNN), com K = 7, da biblioteca SKLearn, documentado [neste link](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html), com o parâmetro weights = 'distance';
+* GFRNN, da biblioteca NeuPy, documentado [neste link](http://neupy.com/apidocs/neupy.algorithms.rbfn.grnn.html);
+* DTree, com profundidade máxima = 7, da biblioteca SKLearn, documentado [neste link](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html);
+* Gaussian Naive Bayes, da biblioteca SKLearn, documentado [neste link](https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html);
+* SVM, da biblioteca SKLearn, com kernel = RBF e C = 8.5, documentado [neste link](https://scikit-learn.org/stable/modules/svm.html);
+* MLP, com função de ativação = relu, 3 hidden layers de 12 perceptrons cada e no máximo 500 interações, da biblioteca SKLearn, documentado [neste link](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html);
+
+O artigo ainda compara com outros algoritmos, que não possuem implementação em bibliotecas externas:
+* WAF (Weighted Attraction Force), utilizando CC como função de massa.
+    * Aguilera, J., González, L.C., Montes-y Gómez, M., Rosso, P., 2018. A new weighted k-nearest neighbor algorithm based on newton’s gravitational force, in: Progress in Pattern Recognition, Image Analysis, Computer Vision, and Applications, Springer International Publishing. pp. 305–313.
+* WAF (Weighted Attraction Force), utilizando CD como função de massa.
+    * Aguilera, J., González, L.C., Montes-y Gómez, M., Rosso, P., 2018. A new weighted k-nearest neighbor algorithm based on newton’s gravitational force, in: Progress in Pattern Recognition, Image Analysis, Computer Vision, and Applications, Springer International Publishing. pp. 305–313.
+* Im-GFRNN (Improved Gravitational Fixed Radius Nearest Neighbor).
+    * Shabani-kordshooli, M., Nikpour, B., Nezamabadi-pour, H., 2017. An improvement to gravitational fixed radius nearest neighbor for imbalanced problem, in: 2017 Artificial Intelligence and Signal Processing Conference (AISP), pp. 262--267. doi:10.1109/AISP.2017.8324109.
