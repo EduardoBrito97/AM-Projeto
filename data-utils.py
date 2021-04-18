@@ -16,6 +16,12 @@ class Dataset():
     def __len__(self):
         return len(self._data)
 
+    def get_data(self):
+        labels = self._data[self._label_column]
+        features = self._data.drop(self._label_column, 1)
+
+        return features, labels
+
     def __getitem__(self, idx):
         features = self._data.iloc[idx].drop(self._label_column)
         features = features.to_frame().transpose()
@@ -80,3 +86,7 @@ class Wine(Dataset):
     def __init__(self, path='datasets/wine/wine.csv', shuffle=True):
         super().__init__(path, shuffle)
         self._label_column = self._data.columns[0]
+
+
+data = Wine()
+data.get_data()
