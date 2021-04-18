@@ -63,7 +63,7 @@ class Mass:
 
 
 if __name__ == "__main__":
-    df = pd.read_csv("../datasets/iris/iris.csv",header=None)
+    df = pd.read_csv("/datasets/iris/iris.csv",header=None)
     features, labels = df.iloc[1:, 0:-1].to_numpy(), df.iloc[1:,-1].to_numpy()
 
     mass = Mass("SEP", features, labels)
