@@ -54,8 +54,8 @@ class KSS:
             d = []
             votes = []
             for j in range(len(self.X)):
-                strenght = (self.massX[j])/(np.power(distances[j][i],2))
-                d.append([strenght,j])
+                strength = (self.massX[j])/((np.power(distances[j][i],2))+0.000000000000001)
+                d.append([strength,j])
             d.sort(key=lambda tup: tup[0],reverse=True)
             d = d[0:self.k]
             for distance, j in d:
