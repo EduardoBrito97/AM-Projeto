@@ -1,16 +1,18 @@
 import numpy as np
 import scipy
 from collections import Counter
+from mass.mass_functions import Mass
 
 class KSS:
     def __init__(self,k):
         self.k = k
     
-    def fit(self,X,Y,massType):
+    def fit(self,X,Y,mass_type):
         self.X = X
         self.Y = Y
 
-        self.massX = self.calculateMass(X,Y,massType)
+        self.mass = Mass(mass_type, X, Y)
+        self.massX = self.mass.calculate_mass()
 
     def predict(self,XTest):
         finalOutput = []
