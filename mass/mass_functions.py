@@ -11,7 +11,7 @@ class Mass:
         self.labels = labels
         self.mass = []
 
-    def calculate_all_mass(self):
+    def calculate_mass(self):
         for i in range(len(self.features)):
             if(self.mass_type == 'SEP'):
                 self.mass.append(self.separation(self.features[i],self.labels[i]))
@@ -67,4 +67,4 @@ if __name__ == "__main__":
     features, labels = df.iloc[1:, 0:-1].to_numpy(), df.iloc[1:,-1].to_numpy()
 
     mass = Mass("SEP", features, labels)
-    print(mass.calculate_all_mass())
+    print(mass.calculate_mass())
