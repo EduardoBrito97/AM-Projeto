@@ -1,148 +1,70 @@
-from mass_entries import get_infos
 import pandas as pd
+import scipy
+import numpy as np
+from mass_entries import get_instances_per_class
 
-# pc1 = 1
-# pc2 = 1
-# pc3 = 1
-# pc4 = 1
-# pc5 = 1
-# pc6 = 1
-# pc7 = 1
-# pc8 = 1
-# pc9 = 1
-# pc10 = 1
-
-# def update_pcis(new_pc1 = None,
-#                 new_pc2 = None,
-#                 new_pc3 = None,
-#                 new_pc4 = None,
-#                 new_pc5 = None,
-#                 new_pc6 = None,
-#                 new_pc7 = None,
-#                 new_pc8 = None,
-#                 new_pc9 = None,
-#                 new_pc10 = None):
-#     global pc1, pc2, pc3, pc4, pc5, pc6, pc7, pc8, pc9, pc10
-#     pc1 = get_val(new_pc1)
-#     pc2 = get_val(new_pc2)
-#     pc3 = get_val(new_pc3)
-#     pc4 = get_val(new_pc4)
-#     pc5 = get_val(new_pc5)
-#     pc6 = get_val(new_pc6)
-#     pc7 = get_val(new_pc7)
-#     pc8 = get_val(new_pc8)
-#     pc9 = get_val(new_pc9)
-#     pc10 = get_val(new_pc10)
-
-# def get_val(pc):
-#     if pc == None:
-#         return 1 * (10 ** (-15))
-#     else:
-#         return pc
 
 class Mass:
-    def __init__(self, dataset_name, dataset, x_i, class_i):
-        self.dataset_name = dataset_name
-        self.dataset = dataset
-        self.instance = x_i
-        self.label = class_i
-        self.pcis = get_infos(dataset, x_i, class_i)
+    def __init__(self, mass_type, features, labels):
+        self.mass_type = mass_type
+        self.features = features
+        self.labels = labels
+        self.mass = []
 
-    def ecoli(self):
-        expr1 = (self.pcis["pc5"] + self.pcis["pc9"]) ** 0.5
-        expr2 = 107.0172 * (expr1/self.pcis["pc4"])
-        return 3.2749 - expr2
+    def calculate_all_mass(self):
+        for i in range(len(self.features)):
+            if(self.mass_type == 'SEP'):
+                self.mass.append(self.separation(self.features[i],self.labels[i]))
+            elif(self.mass_type == 'COH'):
+                self.mass.append(self.cohesion(self.features[i],self.labels[i]))
+            elif(self.mass_type == 'WPC'):
+                self.mass.append(self.weighted_per_class(self.features[i],self.labels[i]))
+            elif(self.mass_type == 'CC'):
+                self.mass.append(self.circled_by_its_own_class(self.features[i],self.labels[i]))
+            else:
+                raise KeyError('Mass function not implemented')
+        return self.mass
 
-    def glass(self):
-        expr1 = 6.0104 * (10 ** 15) * (self.pcis["pc9"] ** 0.5) * (self.pcis["pc3"] - self.pcis["pc7"])
-        expr2 = (2.8823 * (10 ** 17) * self.pcis["pc6"]) + (5.3608 * (10 ** 17))
-        return (expr1/expr2) + 3.7029
+    def separation(self, xq, class_q):
+        sumOfDistances = 0
+        distances =  scipy.spatial.distance.cdist(xq.reshape(1,-1), self.features, 'euclidean')
+        sumOfDistances = sum([distance if class_ != class_q else 0 for class_,distance in zip(self.labels, distances[0])])
 
-    def haberman(self):
-        expr1 = 8.5856 * (10 ** (-7))
-        expr2 = (self.pcis["pc7"] ** 2) / (self.pcis["pc6"] ** 2)
-        return 1.13845 - (expr1 * expr2)
+        mass = 1/(np.log2(sumOfDistances))
+        return mass
 
-    def ionosphere(self):
-        return (0.0115 * self.pcis["pc10"]) + 0.3545
+    def cohesion(self, xq, class_q):
+        sumOfDistances = 0
+        distances =  scipy.spatial.distance.cdist(xq.reshape(1,-1), self.features, 'euclidean')
+        sumOfDistances = sum([distance if class_ == class_q else 0 for class_,distance in zip(self.labels, distances[0])])
+        
+        mass = 1/(np.log2(sumOfDistances))
+        return mass
 
-    def iris(self):
-        return (0.5095 * self.pcis["pc5"]) - (0.0089 * self.pcis["pc8"]) + 3.8569 + (0.0027 * self.pcis["pc1"]) + (0.0471  * self.pcis["pc6"] * self.pcis["pc9"])
+    def weighted_per_class(self, xq, class_q):
+        n_q = sum([1 if label == class_q else 0 for label in self.labels])
 
-    def pima(self):
-        expr1 = 4.6357 * (10 ** (-8)) * (self.pcis["pc7"] ** 2) * self.pcis["pc9"]
-        expr2 = 6.7395 * (10 ** (-8)) * (self.pcis["pc7"] ** 2)
-        return expr1 + expr2 + 0.0014
+        unique_elements, counts_elements = np.unique(self.labels, return_counts=True)
+        class_and_freqs = sorted([(class_, freq) for class_,freq in zip(unique_elements, counts_elements)], key=lambda x: x[1])
+        class_maj = class_and_freqs[-1][0]
+        M = class_and_freqs[-1][1]
 
-    def sonar(self):
-        return 1.4015 - (0.0269 * (self.pcis["pc8"] ** (1/2)))
+        mass = np.log2((M / n_q) + 1)
+        return mass
 
-    def thyroid(self):
-        return 2.8450 - (0.0133 * self.pcis["pc2"])
+    def circled_by_its_own_class(self, xq, class_q):
+        distances =  scipy.spatial.distance.cdist(xq.reshape(1,-1), self.features, 'euclidean')
+        class_and_distances = sorted([(class_, distance) for class_,distance in zip(self.labels, distances[0])], key=lambda x: x[1])
 
-    def vehicle(self):
-        return 2.5963 - (0.1954 * self.pcis["pc10"])
-
-    def wdbc(self):
-        return 0.8835 - (0.0638 * self.pcis["pc5"])
-
-    def wine(self):
-        return (0.9508 * self.pcis["pc1"]) + 0.7208
-
-    def assign_mass(self):
-        if self.dataset_name == "ecoli":
-            return self.ecoli()
-        elif self.dataset_name == "glass":
-            return self.glass()
-        elif self.dataset_name == "haberman":
-            return self.haberman()
-        elif self.dataset_name == "ionosphere":
-            return self.ionosphere()
-        elif self.dataset_name == "iris":
-            return self.iris()
-        elif self.dataset_name == "pima":
-            return self.pima()
-        elif self.dataset_name == "sonar":
-            return self.sonar()
-        elif self.dataset_name == "thyroid":
-            return self.thyroid()
-        elif self.dataset_name == "vehicle":
-            return self.vehicle()
-        elif self.dataset_name == "wdbc":
-            return self.wdbc()
-        elif self.dataset_name == "wine":
-            return self.wine()
-        else:
-            raise KeyError("Dataset not implemented")
+        SNk = sum([1 if elem[0] == class_q else 0 for elem in class_and_distances[:7]])
+        
+        mass = np.log2(SNk + 2)
+        return mass
 
 
 if __name__ == "__main__":
-    df = pd.read_csv("datasets/iris/iris.data",header=None)
-    mass = Mass("iris", df, [5.0,3.6,1.4,0.2], "Iris-setosa")
-    print(mass.assign_mass())
-    # print(ecoli())
-    # print(glass())
-    # print(haberman())
-    # print(ionosphere())
-    # print(iris())
-    # print(pima())
-    # print(sonar())
-    # print(thyroid())
-    # print(vehicle())
-    # print(wdbc())
-    # print(wine())
-    
-    # print('---------------------------------')
-    # update_pcis(new_pc1=2, new_pc10=2)
-    
-    # print(ecoli())
-    # print(glass())
-    # print(haberman())
-    # print(ionosphere())
-    # print(iris())
-    # print(pima())
-    # print(sonar())
-    # print(thyroid())
-    # print(vehicle())
-    # print(wdbc())
-    # print(wine())
+    df = pd.read_csv("../datasets/iris/iris.csv",header=None)
+    features, labels = df.iloc[1:, 0:-1].to_numpy(), df.iloc[1:,-1].to_numpy()
+
+    mass = Mass("SEP", features, labels)
+    print(mass.calculate_all_mass())

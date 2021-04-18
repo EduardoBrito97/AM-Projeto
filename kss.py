@@ -11,40 +11,6 @@ class KSS:
         self.Y = Y
 
         self.massX = self.calculateMass(X,Y,massType)
-    
-    def calculateMass(self,X,Y,massType):
-        mass = []
-        for i in range(len(X)):
-            if(massType == 'SEP'):
-              mass.append(self.separation(X[i],Y[i],X,Y))
-            elif(massType == 'COH'):
-              mass.append(self.cohesion(X[i],Y[i],X,Y))
-        
-        return mass
-    
-    def separation(self,xq,classe,X,Y):
-        sumOfDistances = 0
-        distances =  scipy.spatial.distance.cdist(xq.reshape(1,-1), X, 'euclidean')
-
-        for i in range(len(X)):
-            if(Y[i] != classe):
-                sumOfDistances += distances[0][i]
-        
-        mass = 1/(np.log2(sumOfDistances))
-
-        return mass
-
-    def cohesion(self,xq,classe,X,Y):
-        sumOfDistances = 0
-        distances =  scipy.spatial.distance.cdist(xq.reshape(1,-1), X, 'euclidean')
-
-        for i in range(len(X)):
-            if(Y[i] == classe):
-                sumOfDistances += distances[0][i]
-        
-        mass = 1/(np.log2(sumOfDistances))
-
-        return mass
 
     def predict(self,XTest):
         finalOutput = []
