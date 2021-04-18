@@ -88,5 +88,17 @@ class Wine(Dataset):
         self._label_column = self._data.columns[0]
 
 
-data = Wine()
-data.get_data()
+def get_all_datasets():
+    datasets = {'Ecoli': Ecoli(),
+                'Glass': Glass(),
+                'Haberman': Haberman(),
+                'Ionosphere': Ionosphere(),
+                'Iris': Iris(),
+                'Pima': Pima(),
+                'Sonar': Sonar(),
+                'Thyroid': Thyroid(),
+                'Vehicle': Vehicle(),
+                'WDBC': WDBC(),
+                'Wine': Wine()}
+
+    return datasets
