@@ -1,7 +1,6 @@
 import pandas as pd
 import scipy
 import numpy as np
-from mass_entries import get_instances_per_class
 
 
 class Mass:
