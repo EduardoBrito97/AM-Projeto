@@ -1,6 +1,8 @@
 # Projeto Aprendizagem de Máquina CIn-UFPE 2020.1
 Replicação do artigo 'From neighbors to strengths - the k-strongest strengths (kSS) classification algorithm', disponível em https://doi.org/10.1016/j.patrec.2020.06.020, para o projeto da cadeira de Aprendizagem de Máquina, com o professor George Darmiton da Cunha Cavalcanti.
 
+[Link](https://www.overleaf.com/9922382639qvdrrdyjgwhc) para o relatório em LaTeX.
+
 Grupo:
 * Eduardo Barreto Brito (ebb2);
 * Juliana do Nascimento Damurie da Silva (jnds);
