@@ -61,7 +61,3 @@ def get_infos(dataset, x_i, class_i):
     pcis["pc10"] = sum([1 if item[1][-1] != class_i else 0 for item in total_dist[0:7]])
 
     return pcis
-
-# # Test
-# df = pd.read_csv("datasets/iris/iris.data",header=None)
-# get_infos(df, [5.0,3.6,1.4,0.2], "Iris-setosa")
