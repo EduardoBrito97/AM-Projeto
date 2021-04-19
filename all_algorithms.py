@@ -1,5 +1,6 @@
 import os
 import glob
+import pandas as pd
 
 from kss import KSS
 from data_utils import get_all_datasets
@@ -38,9 +39,12 @@ def main():
                   'MLP': MLPClassifier(hidden_layer_sizes=(12, 12, 12),
                                        max_iter=500)}
 
+    df = pd.DataFrame(columns=['Dataset']+list(algorithms.keys()))
+
     for data_id, data in datasets.items():
         features, labels = data.get_data()
 
+        aux_dict = {'Dataset': [data_id]}
         kf = KFold(n_splits=N_SPLITS, random_state=None, shuffle=True)
         kf.get_n_splits(features)
 
@@ -56,11 +60,10 @@ def main():
                 f1_score += metrics.classification_report(y_test, y_pred,
                                                           output_dict=True,
                                                           zero_division=1)['macro avg']['f1-score']
+            aux_dict[alg_id] = [f1_score/N_SPLITS]
 
-            with open(f'{RESULTS_PATH}/{data_id}.csv', 'a+') as writer:
-                print(f'{alg_id}, {f1_score/N_SPLITS}',
-                      file=writer)
+        df = pd.concat([df, pd.DataFrame.from_dict(aux_dict)])
 
-
+    df.to_csv('results.csv', index=False)
 if __name__ == '__main__':
     main()
