@@ -1,20 +1,24 @@
 import numpy as np
 import scipy
 from collections import Counter
-from mass.mass_functions import Mass
+from mass.Top_mass_functions import TopMF
+from mass.GP_mass_functions import GPMF
 
 class KSS:
-    def __init__(self,k):
+    def __init__(self, k):
         self.k = k
     
-    def fit(self,X,Y,mass_type):
+    def fit(self, X, Y, mass_type=None, dataset_name=None):
         self.X = X
         self.Y = Y
 
-        self.mass = Mass(mass_type, X, Y)
+        if mass_type == 'GP':
+            self.mass = GPMF(dataset_name, X, Y)
+        else:
+            self.mass = TopMF(mass_type, X, Y)
         self.massX = self.mass.calculate_mass()
 
-    def predict(self,XTest):
+    def predict(self, XTest):
         finalOutput = []
         distances = scipy.spatial.distance.cdist( self.X , XTest, 'euclidean')
 

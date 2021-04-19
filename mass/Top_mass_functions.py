@@ -3,7 +3,8 @@ import scipy
 import numpy as np
 
 
-class Mass:
+# Topology-based Mass Functions (TopMF)
+class TopMF:
     def __init__(self, mass_type, features, labels):
         self.mass_type = mass_type
         self.features = features
