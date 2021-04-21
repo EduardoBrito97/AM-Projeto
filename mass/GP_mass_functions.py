@@ -57,7 +57,7 @@ class GPMF:
         expr1 = 8.5856 * (10 ** (-7))
         expr2 = (self.pcis["pc7"] ** 2) / (self.pcis["pc6"] ** 2)
 
-        mass = 1.13845 - (expr1 * expr2)
+        mass = 1.3845 - (expr1 * expr2)
         return mass
 
     def ionosphere(self):
