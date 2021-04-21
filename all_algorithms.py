@@ -33,6 +33,7 @@ def main():
 
     datasets = get_all_datasets()
     algorithms = {'kNN': KNeighborsClassifier(n_neighbors=7),
+                  'DWkNN': KNeighborsClassifier(n_neighbors=7, weights='distance'),
                   'DTree': DecisionTreeClassifier(max_depth=7),
                   'NBayes': GaussianNB(),
                   'SVM': SVC(C=8.5),
@@ -64,6 +65,6 @@ def main():
 
         df = pd.concat([df, pd.DataFrame.from_dict(aux_dict)])
 
-    df.to_csv('results.csv', index=False)
+    df.to_csv('all_algorithms.csv', index=False)
 if __name__ == '__main__':
     main()
