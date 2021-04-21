@@ -26,6 +26,7 @@ Alguns datasets mudaram de número de features, assim como não estão mais disp
 * Ecoli: 7 features (no artigo) -> 8 features (atualmente)
 * Glass Identification: 9 features (no artigo) -> 10 features (atualmente)
 * WDBC (Breast Cancer Wisconsin (Diagnostic)) -> 30 features (no artigo) -> 32 features (atualmente)
+* Vehicle -> 846 instâncias (no artigo) -> 946 instâncias (atualmente)
 
 Além disso, [Thyroid](https://archive.ics.uci.edu/ml/datasets/Thyroid+Disease) possui mais de um dataset, e o escolhido foi o 'new-thyroid'.
 
@@ -34,7 +35,6 @@ Para avaliação, foi utilizado um K = 7 para o KSS (K Strongest Strengths) e o 
 Os algoritmos utilizados para comparação com o algoritmo do artigo são:
 * kNN, com K = 7, da biblioteca SKLearn, documentado [neste link](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html);
 * DWkNN (Distance Weighted kNN), com K = 7, da biblioteca SKLearn, documentado [neste link](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html), com o parâmetro weights = 'distance';
-* GFRNN, da biblioteca NeuPy, documentado [neste link](http://neupy.com/apidocs/neupy.algorithms.rbfn.grnn.html);
 * DTree, com profundidade máxima = 7, da biblioteca SKLearn, documentado [neste link](https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html);
 * Gaussian Naive Bayes, da biblioteca SKLearn, documentado [neste link](https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html);
 * SVM, da biblioteca SKLearn, com kernel = RBF e C = 8.5, documentado [neste link](https://scikit-learn.org/stable/modules/svm.html);
@@ -47,3 +47,5 @@ O artigo ainda compara com outros algoritmos, que não possuem implementação e
     * Aguilera, J., González, L.C., Montes-y Gómez, M., Rosso, P., 2018. A new weighted k-nearest neighbor algorithm based on newton’s gravitational force, in: Progress in Pattern Recognition, Image Analysis, Computer Vision, and Applications, Springer International Publishing. pp. 305–313.
 * Im-GFRNN (Improved Gravitational Fixed Radius Nearest Neighbor).
     * Shabani-kordshooli, M., Nikpour, B., Nezamabadi-pour, H., 2017. An improvement to gravitational fixed radius nearest neighbor for imbalanced problem, in: 2017 Artificial Intelligence and Signal Processing Conference (AISP), pp. 262--267. doi:10.1109/AISP.2017.8324109.
+* GFRNN (Gravitational Fixed Radius Nearest Neighbor).
+	* Zhu, Y., Wang, Z., Gao, D., 2015. Gravitational fixed radius nearest neighbor for imbalanced problem. Knowledge-Based Systems 90, 224 -- 238. URL: http://www.sciencedirect.com/science/article/pii/S0950705115003548, doi:https://doi.org/10.1016/j.knosys.2015.09.015.
