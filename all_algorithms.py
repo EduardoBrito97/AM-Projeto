@@ -66,5 +66,6 @@ def main():
         df = pd.concat([df, pd.DataFrame.from_dict(aux_dict)])
 
     df.to_csv('all_algorithms.csv', index=False)
+
 if __name__ == '__main__':
     main()

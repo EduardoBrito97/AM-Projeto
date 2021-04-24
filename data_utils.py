@@ -1,12 +1,12 @@
 import pandas as pd
 import os
-
+from sklearn.preprocessing import StandardScaler
 
 class Dataset():
     def __init__(self, path, shuffle):
         self._data = pd.read_csv(path)
         self._label_column = self._data.columns[-1]
-
+        
         if shuffle:
             self._shuffle_data()
 
@@ -16,9 +16,14 @@ class Dataset():
     def __len__(self):
         return len(self._data)
 
-    def get_data(self):
+    def get_data(self, normalize = True):
         labels = self._data[self._label_column]
         features = self._data.drop(self._label_column, 1)
+
+        if normalize:
+            scaler = StandardScaler()
+            scaler.fit(features)
+            features = pd.DataFrame(scaler.transform(features))
 
         return features, labels
 
